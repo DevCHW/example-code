@@ -13,7 +13,7 @@ public class TestController {
 
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
-        parentService.parentMethod();
+        parentService.parentMethod1();
         return ResponseEntity.ok("hello");
     }
 }
