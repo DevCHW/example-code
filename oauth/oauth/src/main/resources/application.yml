@@ -5,7 +5,6 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        default_batch_fetch_size: 100
         format_sql: true
         show_sql: true
   h2:
@@ -18,31 +17,34 @@ spring:
       jdbc-url: jdbc:h2:mem:core;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       pool-name: core-db-pool
-      data-source-properties:
-        rewriteBatchedStatements: true
+
+  cloud.openfeign:
+    client:
+      config:
+        default:
+          logger-level: full
+    compression:
+      response:
+        enabled: false
+    httpclient:
+      max-connections: 2000
+      max-connections-per-route: 500
 
 oauth:
   google:
-    client-id: 1027932771426-u2c2pb6p94ubpvlgn54ktj41kaq636dk.apps.googleusercontent.com
-    redirect-uri: http://localhost:8080/oauth/google/test
-    client-secret: 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
+    client-id: ${OAUTH_GOOGLE_CLIENT_ID:oauth.google.client-id}
+    client-secret: ${OAUTH_GOOGLE_CLIENT_SECRET:oauth.google.client-secret}
     scope: profile, email
 
   x:
-    client-id: MUE4clVOeEVjUW9McGJvMk5oWGs6MTpjaQ
-    client-secret: fUpaBkPsS7IHwQ-POjOhXr7GRCxFnIR0SOafBTOvOboW8VTfpw
-    redirect-uri: http://localhost:8080/oauth/x/test
+    client-id: ${OAUTH_X_CLIENT_ID:oauth.x.client-id}
+    client-secret: ${OAUTH_X_CLIENT_SECRET:oauth.x.client-secret}
     scope: tweet.read, users.read
 
   discord:
-    client-id: 1262081449666936854
-    client-secret: U4HfL8whlvSvwLNZAyICMqa-NIjzPD__
-    redirect-uri: http://localhost:8080/oauth/discord/test
+    client-id: ${OAUTH_DISCORD_CLIENT_ID:oauth.discord.client-id}
+    client-secret: ${OAUTH_DISCORD_CLIENT_SECRET:oauth.discord.client-secret}
     scope: identify, email, guilds.members.read
-
-app:
-  jwt:
-    secret: 12345678901234567890123456789012
 
 spring.cloud.openfeign:
   client:
@@ -56,6 +58,10 @@ spring.cloud.openfeign:
     max-connections: 2000
     max-connections-per-route: 500
 
+jwt:
+  secret: 12345678901234567890123456789012
+
 logging:
   level:
     devchw.oauth.client: debug
+
